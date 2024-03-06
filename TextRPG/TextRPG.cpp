@@ -2,24 +2,28 @@
 #include <iostream>
 #include <Windows.h>
 #include <string>
+#include <conio.h>
 
 using namespace std;
 
 class Player;
 class Weapon;
 class Armor;
+class MenuPeace;
 
 class Player
 {
 public:
 	string name;
-	int hpCurr, hpMax;
+	int hpCurr, hpMax, lvl, exp;
 
-	Player(string cName, int cHpCurr, int cHpMax)
+	Player(string cName, int cHpCurr, int cHpMax, int cLvl, int cExp)
 	{
 		name = cName;
 		hpCurr = cHpCurr;
 		hpMax = cHpMax;
+		lvl = cLvl;
+		exp = cExp;
 	}
 };
 
@@ -54,21 +58,55 @@ public:
 	}
 };
 
+void MenuPeaceUp(const Player& player, const Armor& playerArmor, const Weapon& playerWeapon)
+{
+	system("cls");
+
+	cout << player.name << endl
+		<< "hp " << player.hpCurr << " из " << player.hpMax << endl << endl
+		<< "броня " << playerArmor.name << endl
+		<< "класс брони " << playerArmor.defence << endl
+		<< "прочность " << playerArmor.durabilityCurr << " из " << playerArmor.durabilityMax << endl << endl
+		<< "оружие " << playerWeapon.name << endl
+		<< "урон " << playerWeapon.damageMin << "-" << playerWeapon.damageMax << endl
+		<< "состояние оружия " << playerWeapon.durabilityCurr << " из " << playerWeapon.durabilityMax;
+}
+
+void MenuPeaceMiddle()
+{
+	cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+}
+
+void MenuPeaceDown(const Player& player)
+{
+	cout << "Твои действия:" << endl
+		<< "1) стоять настороже" << endl
+		<< "2) отдыхать" << endl;
+}
+
 int main()
 {
 	// русский язык в консоли
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	
-
 	// переменные
 	int tempInt;
 	string tempString;
 	bool check = false;
 
-	Weapon playerWeapon("Кулаки", 1, 2, 100, 100);
-	Armor playerArmor("голый", 0, 100, 100);
+	// инициализация игрока
+	Weapon emptyWeapon("Кулаки", 1, 2, 100, 100);
+	Armor emptyArmor("голый", 0, 100, 100);
+
+	Weapon playerWeapon = emptyWeapon;
+	Armor playerArmor = emptyArmor;
+
+
+
+	
+
+	
 
 
 	
@@ -77,7 +115,7 @@ int main()
 	cout << "Игра \"Мудила\"" << endl;
 	cout << "Введите свое имя: ";
 	cin >> tempString;
-	Player player(tempString, 10, 10);
+	Player player(tempString, 10, 10, 1, 0);
 	cout << "\nПривет, " << player.name << "! Готов отправиться в приключение? \n1) Да\n2) Нет\n";
 	cin >> tempInt;
 
@@ -102,9 +140,9 @@ int main()
 
 	cout << "\nИтак, уебок, ой, то есть " << player.name << ", ты, по классике жанра, полюбому сдохнешь, вопрос когда." << endl
 		<< "На тебя будут нападать рандомные враги и с них будет падать рандомный лут. Отсоси богу рандома, чтобы он снизошел до тебя и тебе повезло. Удачи." << endl
-		<< "P.S. Знай, что если ты выберешь вариант 0, то можешь прочитать справку по данному экрану" << endl
-		<< "для продолжения напиши 1" << endl;
-	cin >> tempInt;
+		<< "P.S. Знай, что если ты выберешь вариант 0, то можешь прочитать справку по данному экрану" << endl << endl
+		<< "для продолжения нажми любую кнопку" << endl;
+	_getch();
 
 	/*
 	-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -175,27 +213,62 @@ int main()
 
 	TODO сделать справку, размер инвентаря, вес оружия и прочего
 	TODO прочность кулаков и голого (наверное перегрузка, но тогда нужен аналог ifExist)
+	TODO проработать отрисовку меню с зонами
+	TODO проверка в menu middle длины строк когда буду делать перегрузку или вообще перепридумать
 
-
-
-	сперва делаю хп броня атака, монстры, дроп оружия и бронек, и учет опыта
+	сперва делаю монстры, дроп оружия и бронек, сам бой и учет опыта
 	____________________________________________________________________________________________________________________________________________________
 	*/
 
 
 
-	cout << player.name << endl
-		<< "hp " << player.hpCurr << " из " << player.hpMax << endl << endl
-		<< "броня " << playerArmor.name << endl
-		<< "класс брони " << playerArmor.defence << endl
-		<< "прочность " << playerArmor.durabilityCurr << " из " << playerArmor.durabilityMax << endl << endl
-		<< "оружие " << playerWeapon.name << endl
-		<< "урон " << playerWeapon.damageMin << "-" << playerWeapon.damageMax << endl
-		<< "состояние оружия " << playerWeapon.durabilityCurr << " из " << playerWeapon.durabilityMax << endl << endl << endl << endl
-		<< "Твои действия:" << endl
-		<< "1) стоять настороже" << endl
-		<< "2) отдыхать" << endl
-		<< "3) поменять оружие" << endl;
+
+
+
+
+
+
+
+
+	check = false;
+
+	while (!check)
+	{
+		MenuPeaceUp(player, playerArmor, playerWeapon);
+		MenuPeaceMiddle();
+		MenuPeaceDown(player);
+
+		tempInt = _getch();
+		
+		switch (tempInt)
+		{
+		case 49:
+			if (player.hpCurr < player.hpMax)
+			{
+				player.hpCurr++;
+				check = true;
+				break;
+			}
+		case 50:
+			if ((player.hpMax - player.hpCurr) >= (player.lvl + 1))
+			{
+				player.hpCurr += (player.lvl + 1);
+			}
+			else
+			{
+				player.hpCurr = player.hpMax;
+			}
+			check = true;
+			break;
+		default:
+			break;
+		}
+	}
+
+	// отсюда пилю рандом на атаку и далее по списку
+	
+
+
 
 		
 }
