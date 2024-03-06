@@ -1,4 +1,15 @@
-﻿class Player
+﻿// Проба новых функций в C++, которые я освоил
+#include <iostream>
+#include <Windows.h>
+#include <string>
+
+using namespace std;
+
+class Player;
+class Weapon;
+class Armor;
+
+class Player
 {
 public:
 	string name;
@@ -12,13 +23,13 @@ public:
 	}
 };
 
-class Weapon 
+class Weapon
 {
 public:
 	string name;
 	int damageMin, damageMax, durabilityCurr, durabilityMax;
 
-	Weapon (string cName, int cDamageMin, int cDamageMax, int cDurabilityCurr, int cDurabilityMax)
+	Weapon(string cName, int cDamageMin, int cDamageMax, int cDurabilityCurr, int cDurabilityMax)
 	{
 		name = cName;
 		damageMin = cDamageMin;
@@ -34,29 +45,14 @@ public:
 	string name;
 	int defence, durabilityCurr, durabilityMax;
 
-	Armor (string cName, int cDurabilityCurr, int cDurabilityMax)
+	Armor(string cName, int cDefence, int cDurabilityCurr, int cDurabilityMax)
 	{
 		name = cName;
+		defence = cDefence;
 		durabilityCurr = cDurabilityCurr;
 		durabilityMax = cDurabilityMax;
 	}
 };
-
-
-
-
-
-
-
-
-
-
-// Проба новых функций в C++, которые я освоил
-#include <iostream>
-#include <Windows.h>
-#include <string>
-
-using namespace std;
 
 int main()
 {
@@ -72,7 +68,7 @@ int main()
 	bool check = false;
 
 	Weapon playerWeapon("Кулаки", 1, 2, 100, 100);
-	Armor playerArmor("голый", 100, 100);
+	Armor playerArmor("голый", 0, 100, 100);
 
 
 	
@@ -82,25 +78,27 @@ int main()
 	cout << "Введите свое имя: ";
 	cin >> tempString;
 	Player player(tempString, 10, 10);
-	cout << "Привет, " << player.name << "! Готов отправиться в приключение? \n1) Да\n2) Нет\n";
+	cout << "\nПривет, " << player.name << "! Готов отправиться в приключение? \n1) Да\n2) Нет\n";
 	cin >> tempInt;
 
 	do 
 	{
 		switch (tempInt) {
 		case 1:
-			cout << "Ну тогда погнали!!!";
 			check = true;
 			break;
 		case 2:
-			cout << "Ну и вали тогда нахер!!!";
+			cout << "\nНу и вали тогда нахер!!!\n";
 			return 0;
 		default:
-			cout << "Че за херню ты ввел? Попробуй еще раз.\n\nГотов отправиться в приключение? \n1) Да\n2) Нет\n";
+			cout << "\nЧе за херню ты ввел? Попробуй еще раз.\n\nГотов отправиться в приключение? \n1) Да\n2) Нет\n";
 			cin >> tempInt;
 			break;
 		}
 	} while (!check);
+
+	// Очистка консоли
+	system("cls");
 
 	cout << "\nИтак, уебок, ой, то есть " << player.name << ", ты, по классике жанра, полюбому сдохнешь, вопрос когда." << endl
 		<< "На тебя будут нападать рандомные враги и с них будет падать рандомный лут. Отсоси богу рандома, чтобы он снизошел до тебя и тебе повезло. Удачи." << endl
@@ -201,3 +199,4 @@ int main()
 
 		
 }
+
